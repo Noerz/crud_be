@@ -6,6 +6,7 @@
   "scripts": {
     "model": "node config/SequelizeGenerate",
     "dev": "nodemon index.js",
+    "sync": "node sync.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
