@@ -1,19 +1,10 @@
 const { registerUser, loginUser } = require("../services/authService");
-
-// Helper to avoid repetitive try/catch in each controller
-const asyncHandler = (fn) => (req, res, next) => {
-  Promise.resolve(fn(req, res, next)).catch(next);
-};
+const { asyncHandler } = require("../middleware/errorHandler");
 
 const Register = asyncHandler(async (req, res) => {
   const { fullName, email, password } = req.body;
-  const newUser = await registerUser({ fullName, email, password });
-  res.status(201).json({
-    code: 201,
-    status: "success",
-    message: "User registered successfully",
-    data: newUser,
-  });
+  const result = await registerUser({ fullName, email, password });
+  res.status(201).json(result);
 });
 
 const login = asyncHandler(async (req, res) => {

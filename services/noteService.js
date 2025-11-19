@@ -1,6 +1,7 @@
 const db = require("../config/database");
 const initModels = require("../models/init-models");
 const models = initModels(db);
+const { NotFoundError } = require("../middleware/errorHandler");
 
 async function getNotesByUser(userId) {
   const where = {};
@@ -21,9 +22,7 @@ async function createNoteForUser(userId, { title, content }) {
 async function updateNoteForUser(userId, idNote, { title, content }) {
   const note = await models.note.findOne({ where: { idNote, user_id: userId } });
   if (!note) {
-    const err = new Error("Note not found");
-    err.status = 404;
-    throw err;
+    throw new NotFoundError("Note not found");
   }
   await models.note.update({ title, content }, { where: { idNote, user_id: userId } });
   return true;
@@ -32,9 +31,7 @@ async function updateNoteForUser(userId, idNote, { title, content }) {
 async function deleteNoteForUser(userId, idNote) {
   const note = await models.note.findOne({ where: { idNote, user_id: userId } });
   if (!note) {
-    const err = new Error("Note not found");
-    err.status = 404;
-    throw err;
+    throw new NotFoundError("Note not found");
   }
   await models.note.destroy({ where: { idNote, user_id: userId } });
   return true;

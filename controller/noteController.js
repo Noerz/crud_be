@@ -4,10 +4,7 @@ const {
   updateNoteForUser,
   deleteNoteForUser,
 } = require("../services/noteService");
-
-const asyncHandler = (fn) => (req, res, next) => {
-  Promise.resolve(fn(req, res, next)).catch(next);
-};
+const { asyncHandler } = require("../middleware/errorHandler");
 
 const getNotes = asyncHandler(async (req, res) => {
   const { user_id } = req.decoded;
